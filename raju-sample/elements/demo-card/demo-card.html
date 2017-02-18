@@ -1,0 +1,45 @@
+<link rel="import" href="..\..\bower_components/polymer/polymer.html">
+<link rel="import" href="..\..\bower_components/paper-input/paper-input.html">
+<link rel="import" href="..\..\bower_components/paper-button/paper-button.html">
+<link rel="import" href="..\..\bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="demo-card">
+  <template>
+    <paper-input label="Emp Code" value="{{empcode}}"></paper-input>
+    <paper-input label="Emp Name" value="{{empname}}"></paper-input>
+    <paper-input label="Address" value="{{empaddress}}"></paper-input>
+    <paper-button on-click="FnSave">Save</paper-button>
+     <iron-ajax
+        method="post"
+        id="saveinfoajax"
+        url="{{saveinfourl}}"
+        params="{{saveinfoparam}}"
+        handle-as="json"
+        content-type="application/json"
+        on-response="saveinfoResponse"
+        debounce-duration="300"
+        >
+  </template>
+
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'demo-card',
+      FnSave:function(){
+        this.saveinfourl="http://localhost:4000"+"/saveinfo";
+        var obj={};
+        obj.code=this.empcode;
+        obj.name=this.empname;
+        obj.address=this.empaddress;
+        this.saveinfoparam=obj;
+        this.$.saveinfoajax.generateRequest();
+      },
+      saveinfoResponse:function(e){
+        alert(e.detail.response.returnval);
+      }
+    });
+  })();
+  </script>
+</dom-module>
