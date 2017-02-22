@@ -1,0 +1,66 @@
+<dom-module id="page-2">
+<style>
+:root
+  {
+	 --paper-input-container-color:#4885ed;
+	  }
+paper-input
+{
+	width:500;
+	margin: auto;
+	}
+	.gold
+	{
+		width:500;
+ 		margin: auto;
+	}
+	paper-button{
+width: 50px;
+background-color:#e2e2e2;
+}
+</style>
+    <template>
+      <form id="form1">
+     		<paper-input char-counter label="Account Holder Name" auto-validate pattern="[a-zA-Z]*" error-message="GIVE A VALID NAME!" value="{{accholder}}"><iron-icon icon="mail" suffix> </iron-icon>
+				</paper-input>
+				<paper-input char-counter label="Bank Name" value="{{bankname}}" auto-validate pattern="[a-zA-Z]*" error-message="GIVE A VALID Bank NAME!" > </paper-input>
+				<!--<paper-input label="Balance" value="{{balance}}" auto-validate pattern="[0-9]*" id="balance" name="balance"error-message="Not allowed!" >
+				<iron-icon icon="account-balance" suffix> </iron-icon></paper-input>-->
+				<paper-input label="Pin no" value="{{pinno}}" char-counter auto-validate pattern="[0-9]*" error-message="Not allowed!"></paper-input>
+				<paper-input label="IFSC" value="{{ifsc}}" char-counter auto-validate pattern="[0-9]*" error-message="Not allowed!" ></paper-input>
+				<gold-cc-cvc-input label="Enter your CCV" value="{{ccv}}" class="gold"></gold-cc-cvc-input>
+				<center><paper-button raised class="custom green" on-click="signIn" id="but">SAVE</paper-button></center>
+			</form>
+			<iron-ajax
+				 method="post"
+				 id="signinid"
+				 url="{{signinfourl}}"
+				 params="{{signinfoparam}}"
+				 handle-as="json"
+				 content-type="application/json"
+				 on-response="signinfoResponse"
+				 debounce-duration="300"
+				 >
+    </template>
+  	<script>
+    	Polymer({
+				is:"page-2",
+				signIn:function(){
+					this.signinfourl="http://localhost:4000"+"/signininfo";
+					var signdata={};
+					signdata.signacc=this.accholder;
+					signdata.signbank=this.bankname;
+					signdata.signpin=this.pinno;
+					signdata.signifsc=this.ifsc;
+					signdata.signccv=this.ccv;
+					this.signinfoparam=signdata;
+					this.$.signinid.generateRequest();
+				},
+				signinfoResponse:function(e){
+					alert(e.detail.response.signinvalue);
+				},
+				ready:function(){
+      	}
+  		});
+		</script>
+	</dom-module>

@@ -1,0 +1,89 @@
+<link rel="import" href="../supplier-detailform/supplier-detailform.html">
+<dom-module id="form-content">
+  <style>
+  :root
+   {
+ 	 --paper-input-container-color:#4885ed;
+ 	  }
+ paper-input
+ {
+ 	width:500;
+ 	margin: auto;
+ 	color:blue;
+ 	}
+ 	paper-button{
+ width: 50px;
+ background-color:#e2e2e2;
+ }
+  </style>
+  <template>
+    <form id="form1">
+    <paper-input label="Supplier Id" value="{{supid}}"auto-validate pattern="[0-9]*" error-message="enter your correct ID" required><iron-icon on-click="supsearch"icon="search" suffix></iron-icon></paper-input>
+    <paper-input label="Supplier Name" value="{{supname}}" auto-validate pattern="[A-Za-z]*" error-message="use only characters"></paper-input>
+    <paper-input label="Supplier Emailid" value="{{supemail}}" auto-validate pattern="[A-Za-z]*[@][a-z]*[.][a-z]*" error-message="enter your correct email"></paper-input>
+    <paper-input label="Supplier Phone-no" value="{{supphone}}" auto-validate pattern="[0-9]*"></paper-input>
+    <paper-input label="Supplier Location" value="{{suplocation}}" auto-validate pattern="[A-Z][a-z]*"></paper-input>
+    <center><paper-button raised on-click="submitfn">Submit</paper-button></center>
+  </form>
+    <template is="dom-repeat" items="{{info}}" as="e">
+    <supplier-detailform id="{{e.Id}}" name="{{e.Name}}" email="{{e.Email}}" phone="{{e.Phone}}" location="{{e.location}}"></supplier-detailform>
+    </template>
+    <iron-ajax
+       method="post"
+       id="saveinfoajax"
+       url="{{saveinfourl}}"
+       params="{{saveinfoparam}}"
+       handle-as="json"
+       content-type="application/json"
+       on-response="saveinfoResponse"
+       debounce-duration="300"
+       >
+       <iron-ajax
+          method="post"
+          id="searchinfoid"
+          url="{{searchinfourl}}"
+          params="{{searchinfoparam}}"
+          handle-as="json"
+          content-type="application/json"
+          on-response="searchinfoResponse"
+          debounce-duration="300"
+          >
+    </template>
+<script>
+  Polymer({
+          is:"form-content",
+          submitfn:function(){
+            this.saveinfourl="http://localhost:4000"+"/saveinfo";
+            var data={};
+            data.sid=this.supid;
+            data.sname=this.supname;
+            data.semail=this.supemail;
+            data.sphone=this.supphone;
+            data.slocation=this.suplocation;
+            this.saveinfoparam=data;
+            this.$.saveinfoajax.generateRequest();
+          },
+          saveinfoResponse:function(e){
+            alert(e.detail.response.datavalue);
+          },
+          supsearch:function(){
+            this.searchinfourl="http://localhost:4000"+"/searchsupplier";
+            var searchid={};
+            searchid.srid=this.supid;
+            this.searchinfoparam=searchid;
+            this.$.searchinfoid.generateRequest();
+          },
+            searchinfoResponse:function(e){
+            var arr=e.detail.response.searchvalue;
+             this.info=arr;
+            // this.supid=arr[0].Id;
+            // this.supname=arr[0].Name;
+            // this.supemail=arr[0].Email;
+            // this.supphone=arr[0].Phone;
+            // this.suplocation=arr[0].location;
+          },
+    ready:function(){
+    }
+    });
+</script>
+</dom-module>

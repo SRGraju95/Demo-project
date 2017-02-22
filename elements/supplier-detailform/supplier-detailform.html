@@ -1,0 +1,67 @@
+<dom-module id="supplier-detailform">
+<template>
+  <paper-input label="Supplier Id" value="{{id}}"></paper-input>
+  <paper-input label="Supplier Name" value="{{name}}"></paper-input>
+  <paper-input label="Supplier Emailid" value="{{email}}"></paper-input>
+  <paper-input label="Supplier Phone-no" value="{{phone}}"></paper-input>
+  <paper-input label="Supplier Location" value="{{location}}"></paper-input>
+
+ <!-- <iron-ajax
+    method="post"
+    id="searchinfoid"
+    url="{{searchinfourl}}"
+    params="{{searchinfoparam}}"
+    handle-as="json"
+    content-type="application/json"
+    on-response="searchinfoResponse"
+    debounce-duration="300"
+    > -->
+ </template>
+
+ <!-- <template is="dom-repeat" items="{{info}}">
+        <input is="iron-input" bind-value="{{item.Id}}"></input>
+        <input is="iron-input" bind-value="{{item.Name}}"></input>
+        <input is="iron-input" bind-value="{{item.Email}}"></input>
+        <input is="iron-input" bind-value="{{item.Phone}}"></input>
+        <input is="iron-input" bind-value="{{item.location}}"></input>
+  </template> -->
+
+<script>
+Polymer({
+  is:"supplier-detailform",
+  ready:function() {
+   //alert(info);
+ }
+ // supsearch:function(){
+ //   this.searchinfourl="http://localhost:4000"+"/searchsupplier";
+ //   var searchid={};
+ //   searchid.srid=this.supid;
+ //   this.searchinfoparam=searchid;
+ //   this.$.searchinfoid.generateRequest();
+ // },
+ //   searchinfoResponse:function(e){
+ //   var arr=e.detail.response.searchvalue;
+ //   this.formcontent="supplier-detailform";
+ //   this.info=arr;
+ //   //alert(arr[0].Name);
+ //   //alert("RESPONSE");
+ //   // this.supid=arr[0].Id;
+ //   // this.supname=arr[0].Name;
+ //   // this.supemail=arr[0].Email;
+ //   // this.supphone=arr[0].Phone;
+ //   // this.suplocation=arr[0].location;
+ // }
+// searchinfoResponse:function(e){
+//   var arr=e.detail.response.searchvalue;
+//   this.info=arr;
+//   this.formcontent="supplier-detailform";
+//   alert("RESPONSE");
+//   // this.supid=arr[0].Id;
+//   // this.supname=arr[0].Name;
+//   // this.supemail=arr[0].Email;
+//   // this.supphone=arr[0].Phone;
+//   // this.suplocation=arr[0].location;
+// }
+});
+</script>
+</dom-module>

@@ -1,0 +1,107 @@
+<!--<link rel="import" href="..\..\bower_components/polymer/polymer.html">
+<link rel="import" href="..\..\bower_components/paper-input/paper-input.html">
+<link rel="import" href="..\..\bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="..\..\bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="..\..\bower_components/paper-item/paper-item.html">
+<link rel="import" href="..\..\bower_components/paper-button/paper-button.html">-->
+
+<dom-module id="item-det">
+<style>
+:root
+ {
+ --paper-input-container-color:#4885ed;
+  }
+#div1{
+  margin: auto;
+  width: 500;
+}
+paper-dropdown-menu{
+  margin: auto;
+  width: 500;
+}
+paper-button{
+width: 50px;
+background-color:#e2e2e2;
+}
+</style>
+  <template id="temp1">
+    <div id="div1">
+   <paper-input label="Item ID" value="{{iid}}" required auto-validate error-message="Enter the item id!"><iron-icon icon="search" suffix on-click="searchdb"></iron-icon></paper-input>
+   <paper-input label="Item Name" value="{{iname}}" required  auto-validate pattern="[a-zA-Z]*" error-message="letters only!"></paper-input>
+   <paper-dropdown-menu label="Item Type" value="{{itype}}">
+      <paper-listbox class="dropdown-content" selected="{{selectedType}}" attr-for-selected="value" >
+        <paper-item value="select">Select</paper-item>
+        <paper-item value="mechanical">Mechanical</paper-item>
+        <paper-item value="electrical">Electrical</paper-item>
+        <paper-item value="electronics">Electronics</paper-item>
+      </paper-listbox>
+    </paper-dropdown-menu>
+    <center><paper-button id="submit" on-click="insertdb">Save</paper-button></center>
+  </div>
+  <!--  <template is="dom-repeat" items="{{info}}" as="e">
+      <div>Item ID:{{e.Item_ID}}</div>
+      <div>Item Name:{{e.Item_Name}}</div>
+      <div>Item Type:{{e.Item_Type}}</div>
+    </template>-->
+
+  <iron-ajax
+        method="post"
+        id="itemsave"
+        url="{{itemurl}}"
+        params="{{itemparam}}"
+        handle-as="json"
+        content-type="application/json"
+        on-response="itemResponse"
+        debounce-duration="300">
+
+        <iron-ajax
+              method="post"
+              id="searchitem"
+              url="{{searchitemurl}}"
+              params="{{searchitemparam}}"
+              handle-as="json"
+              content-type="application/json"
+              on-response="searchitemResponse"
+              debounce-duration="300">
+   </template>
+
+<script>
+    Polymer({
+      is: "item-det",
+	   ready:function(){
+      },
+      insertdb:function(){
+        this.itemurl="http://localhost:4000"+"/saveiteminfo";
+        var obj={};
+        obj.id=this.iid;
+        obj.name=this.iname;
+        obj.type=this.itype;
+        this.itemparam=obj;
+        this.$.itemsave.generateRequest();
+      },
+      itemResponse:function(e){
+        alert(e.detail.response.itemvalue);
+      },
+
+     searchdb:function(){
+        this.searchitemurl="http://localhost:4000"+"/searchiteminfo";
+        var obj={};
+        obj.id=this.iid;
+        this.searchitemparam=obj;
+        this.$.searchitem.generateRequest();
+      },
+      searchitemResponse:function(e){
+        var arr=e.detail.response.itemvalue;
+        //this.info=arr;
+        this.iid=arr[0].Id;
+        this.iname=arr[0].Name;
+        this.itype=arr[0].Type;
+        this.selectedType=arr[0].Type;
+      //alert(e.detail.response.returnval);
+      //  alert(JSON.stringify(searchdata));
+    }
+
+    });
+</script>
+
+</dom-module>

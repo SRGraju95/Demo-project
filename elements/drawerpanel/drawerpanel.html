@@ -1,0 +1,51 @@
+<!-- <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html"> -->
+<link rel="import" href="../supplierdet/supplierdet.html">
+<dom-module id="appdrawer-1">
+  <style>
+   app-toolbar{
+     background-color:C998EE;
+   }
+   app-drawer-layout{
+     /*background-color: C4F1F0;*/
+      background-color:lightgray;
+         }
+  </style>
+<template>
+  <app-drawer-layout fullbleed force-narrow >
+    <app-drawer swipe-open id="appcontent">
+    <paper-menuclass="dropdown-content">
+      <paper-item on-click="tabfun">create Details</paper-item>
+    </paper-menu>
+    </app-drawer>
+    <app-header-layout has-scrolling-region>
+      <app-header fixed effects="waterfall" >
+        <app-toolbar>
+        <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
+        <div>Menu</div>
+      </app-toolbar>
+      </app-header>
+    <iron-pages selected="{{page}}" attr-for-selected="data-category">
+      <section data-category="tabcontent">
+        <supplier-tab></supplier-tab>
+      </section>
+    </iron-pages>
+  </app-header-layout>
+    </app-drawer-layout>
+</template>
+<script>
+Polymer({
+    is:"appdrawer-1",
+    ready:function(){
+    },
+    tabfun:function(){
+      this.page="tabcontent";
+    }
+      });
+</script>
+<dom-module>

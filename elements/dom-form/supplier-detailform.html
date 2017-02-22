@@ -1,0 +1,46 @@
+<dom-module id="supplier-detailform">
+<style>
+:root
+ {
+ --paper-input-container-color:#4885ed;
+  }
+paper-input
+{
+width:500;
+margin: auto;
+color:blue;
+}
+paper-button{
+width: 50px;
+background-color:#e2e2e2;
+}
+</style>
+<template>
+ <template is="dom-repeat" items="{{info}}" as="e">
+  <paper-input label="Supplier Id" value="{{e.Id}}"></paper-input>
+  <paper-input label="Supplier Name" value="{{e.Name}}"></paper-input>
+  <paper-input label="Supplier Emailid" value="{{e.Email}}"></paper-input>
+  <paper-input label="Supplier Phone-no" value="{{e.Phone}}"></paper-input>
+  <paper-input label="Supplier Location" value="{{e.location}}"></paper-input>
+ </template>
+</template>
+<script>
+Polymer({
+  is:"supplier-detailform",
+  ready:function() {
+  //  alert("dom");
+},
+searchinfoResponse:function(e){
+  var arr=e.detail.response.searchvalue;
+  this.info=arr;
+  this.formcontent="supplier-detailform";
+  alert("RESPONSE");
+  // this.supid=arr[0].Id;
+  // this.supname=arr[0].Name;
+  // this.supemail=arr[0].Email;
+  // this.supphone=arr[0].Phone;
+  // this.suplocation=arr[0].location;
+}
+});
+</script>
+</dom-module>

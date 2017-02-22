@@ -1,0 +1,49 @@
+<link rel="import" href="../formcontent/formcontent.html">
+<link rel="import" href="../page-2/page-2.html">
+<!-- <link rel="import" href="../rough/xmlreq.html"> -->
+<link rel="import" href="../item-det/item-det.html">
+<dom-module id="supplier-tab">
+  <template>
+    <style>
+    .tabstyle{
+      background-color:gray;
+      width:800;
+      @apply(--layout-horizontal);
+      margin: auto;
+    }
+    </style>
+    <paper-tabs class="tabstyle">
+      <paper-tab on-click="tabfun">SUPPLIER DETAILS</paper-tab>
+      <paper-tab on-click="tabfun1" id="tab1">ACCOUNT DETAILS</paper-tab>
+      <paper-tab on-click="itemfun">ITEM DETAILS</paper-tab>
+    </paper-tabs>
+    <iron-pages selected="{{formcon}}" attr-for-selected="data-category">
+    <section data-category="form-content">
+      <form-content></form-content>
+    </section>
+    <section data-category="page-2">
+      <page-2></page-2>
+    </section>
+    <section data-category="item-det">
+      <item-det></item-det>
+    </section>
+  </iron-pages>
+  </template>
+<script>
+  Polymer({
+    is:"supplier-tab",
+    tabfun:function(){
+      this.formcon="form-content";
+      //document.querySelector('form-content').supsearch();
+    },
+    tabfun1:function(){
+      this.formcon="page-2";
+    },
+    itemfun:function(){
+      this.formcon="item-det";
+    },
+    ready:function() {
+    }
+    });
+</script>
+</dom-module>
