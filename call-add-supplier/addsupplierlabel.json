@@ -1,0 +1,13 @@
+[{"sid":"supplierid",
+  "sname":"suppliername",
+  "Ad_1":"address1",
+  "Ad_2":"address2",
+  "Ad_3":"address3",
+  "country":"country",
+  "ste":"state",
+  "cty":"city",
+  "p_code":"pincode",
+  "m_number1":"mobile1",
+  "m_number2":"mobile2",
+  "e_ID":"email",
+  "stauslabl":"status"}]

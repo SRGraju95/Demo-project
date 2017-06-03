@@ -1,0 +1,98 @@
+<dom-module id="supplier-to-additem">
+  <template>
+  <style>
+    paper-dropdown-menu{
+      --paper-dropdown-menu:{
+      width: 100%;
+    }
+  }
+  paper-card{
+      width: 100%;
+  }
+  #datepickerid{
+    width: 100%;
+    margin-top: 25px;
+  }
+  </style>
+  <iron-collapse id="customercollapse" duration="5000" horizontal>
+    <paper-card>
+      <div class="card-content">
+    <paper-dropdown-menu label=" choose itemname">
+      <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{selectionname}}" on-click="getitemidFn">
+        <template is="dom-repeat" items="{{itemnamedata}}">
+          <paper-item value="{{item.itemname}}">{{item.itemname}}</paper-item>
+        </template>
+      </paper-menu>
+    </paper-dropdown-menu>
+    <paper-input label="Item Price" value="{{itempriceval}}"></paper-input>
+    <div id="datepickerid" width="300">
+      <datetime-picker width="300" date-string="{{min}}"  min-date="[[max]]" use-not-native></datetime-picker>
+    </div>
+    <div style="margin-top:8%;">
+        <center><paper-button class="btn btn-app" on-click="saveitemssupplierFn"><i class="fa fa-save"></i>save</paper-button></center>
+    </div>
+    </div>
+    </paper-card>
+  </iron-collapse>
+    <iron-ajax
+      auto
+      method="post"
+      url="http://localhost:4000/supplieritem_map"
+      handle-as="json"
+      on-response="sup_item_map_Response"></iron-ajax>
+      <iron-ajax
+        id="sup_to_item_map_id"
+        method="post"
+        params="{{itemmapparams}}"
+        url="http://localhost:4000/supplieritempostinfo"
+        handle-as="json"
+        on-response="sup_item_post_Response"></iron-ajax>
+      <p>{{getsupplierid}}</p>
+      <p hidden>{{totaljsonval}}</p>
+      <p hidden>{{itemid}}</p>
+  </template>
+  <script>
+  (function() {
+     'use strict';
+     var arr=[];
+     var supplierdata;
+    Polymer({
+      is:"supplier-to-additem",
+      ready:function(){
+    },
+    check:function(){
+      this.$.customercollapse.toggle();
+    },
+      backtosupplierFn:function(){
+        document.querySelector("home-page").FnSetPage("call-add-supplier");
+      },
+      sup_item_map_Response:function(e){
+        var getdata=e.detail.response.returnval;
+        this.totaljsonval=getdata;
+        this.itemnamedata=getdata;
+      },
+      getsupplieridFn(data){
+      supplierdata=data;
+      },
+      saveitemssupplierFn:function(){
+        this.itemmapparams={supid:supplierdata,
+                            itemid:this.itemid,
+                            effectivedate:this.min,
+                            pricing:this.itempriceval};
+        this.$.sup_to_item_map_id.generateRequest();
+      },
+      getitemidFn:function(){
+        var data=this.totaljsonval;
+        for(var i=0;i<=data.length;i++){
+          if(data[i].itemname==this.selectionname){
+            this.itemid=data[i].itemid;
+          }
+        }
+      },
+      sup_item_post_Response:function(e){
+        alert(e.detail.response.returnval);
+      }
+    });
+    })();
+  </script>
+</dom-module>

@@ -1,0 +1,104 @@
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<dom-module id="call-add-supplier-ironajax">
+  <template>
+    <iron-ajax
+      auto
+      method="get"
+      id="addSuplabelAjax"
+      url="addsupplierlabel.json"
+      handle-as="json"
+      content-type="application/json"
+      on-response="jsoninforesponse"
+      last-response="{{responsejson}}">
+    </iron-ajax>
+    <iron-ajax
+      auto
+      method="get"
+      id="addSupCountry_id"
+      url="country-lsitbox.json"
+      handle-as="json"
+      content-type="application/json"
+      on-response="countryjsoninforesponse"
+      last-response="{{countryresponsejson}}">
+    </iron-ajax>
+    <iron-ajax
+      method="post"
+      id="dbpostAjax"
+      url="http://localhost:4000/savesupplierdata"
+      params="{{dbpostparams}}"
+      handle-as="json"
+      content-type="application/json"
+      on-response="dbinforesponse">
+    </iron-ajax>
+    <iron-ajax
+      auto
+      method="get"
+      id="addSupState_id"
+      url="state-listbox.json"
+      handle-as="json"
+      content-type="application/json"
+      last-response="{{stateresponsejson}}">
+    </iron-ajax>
+    <!-- <iron-ajax
+      auto
+      method="post"
+      url="http://localhost:4000/getsupplierdata"
+      handle-as="json"
+      on-response="supplierdetResponse"></iron-ajax> -->
+      <iron-ajax
+        method="post"
+        id="searchsidAjax"
+        url="http://localhost:4000/searchsupplierid"
+        params="{{searchparams}}"
+        handle-as="json"
+        content-type="application/json"
+        on-response="searchsidresponse">
+      </iron-ajax>
+  </template>
+<script>
+  Polymer({
+    is:"call-add-supplier-ironajax",
+
+    jsoninforesponse:function(){
+      var arr=this.responsejson;
+        document.querySelector("call-add-supplier").getJsondata(arr[0].sid,arr[0].sname,arr[0].Ad_1,arr[0].Ad_2,
+        arr[0].Ad_3,arr[0].country,arr[0].ste,arr[0].cty,arr[0].p_code,arr[0].m_number1,arr[0].m_number2,arr[0].e_ID,
+        arr[0].stauslabl);
+        },
+    dbinforesponse:function(a){
+      alert(a.detail.response.datavalue);
+        },
+        searchsidFN:function(obj){
+          this.searchparams=obj;
+          this.$.searchsidAjax.generateRequest();
+        },
+    to_ironajax:function(getValue){
+      this.dbpostparams=getValue;         //restrict without click sumit button
+      this.$.dbpostAjax.generateRequest();
+    },
+    countryjsoninforesponse:function(){
+    // document.querySelector("country-listbox").getjsoncountry_Fn(this.countryresponsejson);
+    document.querySelector("call-add-supplier").getcountryjsondata(this.countryresponsejson);
+  },
+  searchsidresponse:function(e){
+    alert(e.detail.response.returnval);
+    var getdata=e.detail.response.returnval;
+    document.querySelector("call-add-supplier").datafetchFn(getdata);
+    if(getdata[0].itemname != null){
+    document.querySelector("call-add-supplier").getironpageFn(getdata);
+  }
+  },
+  countryjsoninfo:function(a){
+    var statedata=this.stateresponsejson;
+     var data=a;
+     for(i=0;i<=statedata.length;i++){
+       for(var k in statedata[i]){
+          if(data==k){
+            document.querySelector("call-add-supplier").getstatejsondata(statedata[i][k]);
+          }
+        }
+  }
+}
+});
+</script>
+</dom-module>

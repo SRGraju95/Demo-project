@@ -1,0 +1,96 @@
+<link rel="import" href="call-add-supplier-ironajax.html">
+<link rel="import" href="supplier-to-additem.html">
+<dom-module id="call-add-supplier">
+  <template>
+    <p hidden>{{suid}}</p>
+    <p hidden>{{getsupplierstring}}</p>
+    <style>
+      paper-dropdown-menu{
+        --paper-dropdown-menu:{
+        width: 100%;
+      }
+    }
+    #div1{
+      margin-top: 15%;
+    }
+    </style>
+    <div class="container">
+      <!-- <div class="card-content"> -->
+        <div class="row">
+          <!-- <paper-card style="width:100%;"> -->
+          <div class="col-sm-6">
+            <img src="../../images/salesimage.jpg" width="100%" height="100%"/>
+            <div id="div1">
+            <center><paper-button id="additemid" class="btn btn-app" on-click="additemFn" disabled><i class="fa fa-cart-plus">Add Item</i></paper-button></center>
+          </div>
+          </div>
+        <div class="col-sm-6">
+        <paper-card style="width:100%;" elevation="0">
+        <div class="card-content">
+        <paper-input hidden label="{{Supid}}" value="{{SupIdval}}"  auto-validate pattern="[A-Za-z]*" error-message="use only characters" required><iron-icon  icon="search" suffix></iron-icon></paper-input>
+        <paper-input  label="{{SupName}}" value="{{value1}}" on-click="clickFN"  on-keydown="FnSearchEnquiry1"><iron-icon  icon="search" on-click="searchitemdet" suffix></paper-input>
+            <paper-listbox class="dropdown-content" id="transportinput3"  on-iron-select="FnSelectEnquiry2" selected="{{selectedname}}">
+              <template is="dom-repeat" items="{{itemArray1}}" as="item1">
+                <paper-item value="{{item1.supplier_id}}">{{item1.itemdes1}}</paper-item>
+              </template>
+            </paper-listbox>
+        <!-- <paper-input label="{{SupName}}" value="{{SupNameval}}" on-click="clickFN" auto-validate pattern="[A-Za-z]*" error-message="use only characters" required><iron-icon  icon="search" on-click="searchitemdet" suffix></iron-icon></paper-input> -->
+        <paper-input label="{{Cityname}}" value="{{Citynameval}}"></paper-input>
+        <iron-collapse id="suppliercollapse" opened="{{colvar}}">
+        <paper-input label="{{Add1}}" value="{{Add1val}}" required></paper-input>
+        <paper-input label="{{Add2}}" value="{{Add2val}}" required></paper-input>
+        <paper-input label="{{Add3}}" value="{{Add3val}}" required></paper-input>
+        <div>
+        <!-- <paper-input  label="{{countryname}}" value="{{value1}}" on-click="clickFN"  on-keydown="FnSearchEnquiry1"><iron-icon  icon="search" on-click="searchitemdet" suffix></paper-input> -->
+        <paper-dropdown-menu label="{{countryname}}">
+          <!-- <paper-listbox class="dropdown-content" id="transportinput4"  on-iron-select="FnSelectEnquiry2" selected="{{selectedcountryname}}"> -->
+          <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{selection}}" on-click="selectCountryFn">
+            <template is="dom-repeat" items="{{countryitems}}">
+              <paper-item value="{{item.country}}">{{item.country}}</paper-item>
+            </template>
+          </paper-menu>
+        <!-- </paper-listbox> -->
+        </paper-dropdown-menu>
+      </div>
+      <div>
+        <paper-dropdown-menu label="{{State}}">
+          <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{selectionstate}}" on-click="selectStateFn">
+            <template is="dom-repeat" items="{{stateitems}}">
+              <paper-item value="{{item.state}}">{{item.state}}</paper-item>
+            </template>
+          </paper-menu>
+        </paper-dropdown-menu>
+      </div>
+        <paper-input label="{{Pin}}" value="{{Pinval}}" auto-validate pattern="[0-9]{6}" error-message="enter correct pincode"></paper-input>
+        <paper-input label="{{MobNumber1}}" value="{{MobNumberval1}}" auto-validate pattern="[0-9]{10}" error-message="enter correct mobile number"></paper-input>
+        <paper-input label="{{MobNumber2}}" value="{{MobNumberval2}}" auto-validate pattern="[0-9]{10}" error-message="enter correct mobile number"></paper-input>
+        <paper-input label="{{EmID}}" value="{{EmIDval}}" auto-validate pattern="[A-Za-z]*[@][a-z]*[.][a-z]*" error-message="enter your correct email"></paper-input>
+        <paper-input hidden label="{{statuslabel}}" value="{{staval}}" required></paper-input>
+        <div style="margin-top:10%;">
+          <center><paper-button raised id="anchorID" class="btn btn-app" on-click="savebuttonFn"><i class="fa fa-save"></i>save</paper-button></center>
+        </div>
+      </iron-collapse>
+      <iron-pages selected="{{page}}" attr-for-selected="data-category">
+        <section data-category="supplier-to-additem">
+          <supplier-to-additem></supplier-to-additem>
+        </section>
+        <section data-category="item-display">
+          <item-display></item-display>
+        </section>
+      </iron-pages>
+        </div>
+</paper-card>
+</div>
+</div>
+<call-add-supplier-ironajax></call-add-supplier-ironajax>
+<autogen-id></autogen-id>
+<iron-ajax
+      auto
+      method="post"
+      url="http://localhost:4000/autocompletesupplier_name"
+      handle-as="json"
+      on-response="autocompletearr">
+</iron-ajax>
+  </template>
+    <script src="call-add-supplier.js"></script>
+</dom-module>
